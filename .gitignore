@@ -1,0 +1,23 @@
+# Tout est ignoré par défaut : seuls le code, les outils et les données du site sont versionnés.
+# Les médias extraits du jeu (images, modèles, sons, vidéos…) ne sont PAS publiés.
+/*
+!/.gitignore
+!/README.md
+!/Ouvrir le site.bat
+!/tools/
+!/Site/
+
+# Site : code + données générées seulement
+/Site/*
+!/Site/index.html
+!/Site/app.js
+!/Site/style.css
+!/Site/viewer3d.js
+!/Site/shader_preview.js
+!/Site/serveur.py
+!/Site/lib/
+!/Site/data/
+
+__pycache__/
+*.pyc
+node_modules/

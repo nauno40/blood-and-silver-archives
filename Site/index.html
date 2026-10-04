@@ -1,0 +1,50 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blood and Silver — Archives</title>
+<link rel="stylesheet" href="style.css?v=34">
+<link rel="stylesheet" href="lib/spine-player.min.css">
+</head>
+<body>
+<header>
+  <a class="brand" href="#/"><span class="sigil">✠</span> Blood and Silver <em>Archives</em></a>
+  <nav id="nav"></nav>
+  <input id="search" type="search" placeholder="Rechercher…" autocomplete="off">
+</header>
+<main id="view"></main>
+
+<div id="lightbox" hidden>
+  <button class="lb-close" title="Fermer (Échap)">✕</button>
+  <button class="lb-prev" title="Précédent (←)">‹</button>
+  <figure><img alt=""><div id="lb3d" hidden></div><div class="lb-modes" hidden></div><figcaption></figcaption></figure>
+  <button class="lb-next" title="Suivant (→)">›</button>
+</div>
+
+<div id="player" hidden>
+  <button class="pl-play" title="Lecture / pause">▶</button>
+  <div class="pl-info"><strong class="pl-title"></strong><span class="pl-meta"></span><div class="pl-sub"></div></div>
+  <input class="pl-seek" type="range" min="0" max="1000" value="0">
+  <span class="pl-time">0:00</span>
+  <span class="pl-dl"></span>
+  <button class="pl-close" title="Fermer">✕</button>
+  <audio preload="none"></audio>
+</div>
+
+<script src="data/characters.js"></script>
+<script src="data/heroes.js"></script>
+<script src="data/stats.js"></script>
+<script src="data/portraits.js"></script>
+<script src="data/mainbg.js"></script>
+<script src="data/backgrounds.js"></script>
+<script src="data/videos.js"></script>
+<script src="data/audio.js"></script>
+<script src="data/texts.js"></script>
+<script src="lib/spine-player.min.js"></script>
+<script type="importmap">{ "imports": { "three": "./lib/three/three.module.min.js" } }</script>
+<script type="module" src="viewer3d.js?v=34"></script>
+<script src="shader_preview.js?v=34"></script>
+<script src="app.js?v=34"></script>
+</body>
+</html>
