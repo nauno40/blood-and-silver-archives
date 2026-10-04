@@ -1,12 +1,13 @@
 """Extraction complémentaire : toute Texture2D / Sprite dont les pixels ne sont pas déjà présents dans PNG\
 (comparaison par empreinte des pixels RGBA) est écrite dans PNG/<dossier>/<bundle>/<nom>.png.
 1) index des empreintes des PNG existants (pixel_index.json, réutilisé)  2) parcours de tous les bundles."""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, json, hashlib
 from concurrent.futures import ProcessPoolExecutor
 
-ASSETS = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
-OUT = r"E:\Projets\BloodAndSilver\PNG"
-IDX = r"C:\Users\Nauno\.bns_tools\pixel_index.json"
+ASSETS = ASSETS
+OUT = PROJECT + r"\PNG"
+IDX = TOOLS_DIR + r"\pixel_index.json"
 
 def safe(n): return re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", n).strip() or "unnamed"
 

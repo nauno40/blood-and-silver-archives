@@ -1,11 +1,12 @@
 """Repère les fonds d'écran parmi les textures extraites (PNG/) :
 grandes images (>= 1000 px de large), en paysage, quasi entièrement opaques.
 Écrit la liste dans bg_candidates.json."""
+from config import PROJECT, TOOLS_DIR  # chemins : voir tools/config.py
 import glob, json, os
 from concurrent.futures import ProcessPoolExecutor
 from PIL import Image
 
-ROOT = r"E:\Projets\BloodAndSilver\PNG"
+ROOT = PROJECT + r"\PNG"
 
 def check(p):
     try:
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     with ProcessPoolExecutor() as ex:
         res = [r for r in ex.map(check, files, chunksize=64) if r]
     res.sort(key=lambda r: -r["w"] * r["h"])
-    json.dump(res, open(r"C:\Users\Nauno\.bns_tools\bg_candidates.json", "w", encoding="utf-8"), indent=1)
+    json.dump(res, open(TOOLS_DIR + r"\bg_candidates.json", "w", encoding="utf-8"), indent=1)
     print(len(files), "images analysées,", len(res), "candidats")
     from collections import Counter
     print(Counter(os.path.relpath(r["path"], ROOT).split(os.sep)[0] for r in res))

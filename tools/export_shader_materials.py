@@ -1,13 +1,14 @@
 r"""Pour chaque shader extrait (Shaders\index.json), retrouve des matériaux du jeu qui l'utilisent et exporte de quoi
 faire un aperçu en direct sur le site : valeurs (floats, couleurs), textures (PNG), échelle/décalage, mots-clés.
-Sortie : E:\Projets\BloodAndSilver\Site\shader_preview\<dossier>\material.json + textures\*.png"""
+Sortie : <projet>\Site\shader_preview\<dossier>\material.json + textures\*.png"""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, json, hashlib
 from concurrent.futures import ProcessPoolExecutor
 
-ROOT = r"E:\Projets\BloodAndSilver"
-ASSETS = os.path.join(ROOT, r"data\com.moonton.silverblood.eu\files\dragon2019\assets")
+ROOT = PROJECT
+ASSETS = ASSETS
 OUT = os.path.join(ROOT, "Site", "shader_preview")
-TOOLS = r"C:\Users\Nauno\.bns_tools"
+TOOLS = TOOLS_DIR
 BAD = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
 
 def scan(rel):

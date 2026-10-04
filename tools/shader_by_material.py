@@ -1,7 +1,8 @@
 """Nom de matériau (minuscules, sans _timeline) -> nom du shader, d'après les bundles où le shader est présent."""
+from config import ASSETS  # chemins : voir tools/config.py
 import os, json, re
 from concurrent.futures import ProcessPoolExecutor
-A = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
+A = ASSETS
 def scan(rel):
     import UnityPy
     out = {}

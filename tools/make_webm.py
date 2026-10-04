@@ -1,12 +1,13 @@
 r"""Convertit chaque animation WebP (Animations\<bundle>\<squelette>\<anim>.webp) en WebM VP9 avec
 transparence pour le site : Site\anim\<bundle>\<squelette>\<anim>.webm (même cadence, boucle gérée par le lecteur)."""
+from config import PROJECT, FFMPEG  # chemins : voir tools/config.py
 import os, glob, subprocess
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image, ImageSequence
 
-ROOT = r"E:\Projets\BloodAndSilver"
+ROOT = PROJECT
 OUT = os.path.join(ROOT, "Site", "anim")
-FF = r"C:\Users\Nauno\.bns_tools\venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+FF = FFMPEG
 
 def job(src):
     rel = os.path.relpath(src, os.path.join(ROOT, "Animations"))

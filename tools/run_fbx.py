@@ -1,11 +1,12 @@
 r"""Convertit tous les GLB du site en FBX (textures intégrées) avec 4 Blender en parallèle,
 puis vérifie chaque FBX par réimport. Site\models\<cat>\<n>.glb -> Site\models_fbx\<cat>\<n>.fbx"""
+from config import PROJECT, TOOLS_DIR, BLENDER  # chemins : voir tools/config.py
 import os, glob, subprocess, tempfile
 from concurrent.futures import ThreadPoolExecutor
 
-SITE = r"E:\Projets\BloodAndSilver\Site"
-BL = r"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"
-TOOLS = r"C:\Users\Nauno\.bns_tools"
+SITE = PROJECT + r"\Site"
+BL = BLENDER
+TOOLS = TOOLS_DIR
 pairs = []
 for g in sorted(glob.glob(os.path.join(SITE, "models", "*", "*.glb"))):
     f = os.path.join(SITE, "models_fbx", os.path.basename(os.path.dirname(g)), os.path.splitext(os.path.basename(g))[0] + ".fbx")

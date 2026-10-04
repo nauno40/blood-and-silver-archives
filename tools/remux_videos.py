@@ -1,11 +1,12 @@
 r"""Copie sans perte des vidéos du jeu vers Site\videos, index (moov) placé en tête pour une lecture
 immédiate dans le navigateur (-c copy -movflags +faststart : aucun ré-encodage)."""
+from config import PROJECT, ASSETS, FFMPEG  # chemins : voir tools/config.py
 import os, glob, subprocess
 from concurrent.futures import ThreadPoolExecutor
 
-SRC = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets\Video"
-DST = r"E:\Projets\BloodAndSilver\Site\videos"
-FF = r"C:\Users\Nauno\.bns_tools\venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+SRC = ASSETS + r"\Video"
+DST = PROJECT + r"\Site\videos"
+FF = FFMPEG
 os.makedirs(DST, exist_ok=True)
 
 def job(src):

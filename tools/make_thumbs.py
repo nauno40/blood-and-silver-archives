@@ -1,10 +1,11 @@
 r"""Miniatures WebP (360 px max) de toutes les images pour le site.
-Source -> E:\Projets\BloodAndSilver\Site\thumbs\<même chemin relatif>.webp"""
+Source -> <projet>\Site\thumbs\<même chemin relatif>.webp"""
+from config import PROJECT  # chemins : voir tools/config.py
 import os, glob
 from concurrent.futures import ProcessPoolExecutor
 from PIL import Image
 
-ROOT = r"E:\Projets\BloodAndSilver"
+ROOT = PROJECT
 DIRS = ["PNG", "Images_fixes", "Fonds_ecran", "Fonds_ecran_principal", "Pixel_AFK"]
 OUT = os.path.join(ROOT, "Site", "thumbs")
 

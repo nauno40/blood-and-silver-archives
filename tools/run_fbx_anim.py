@@ -1,10 +1,11 @@
 r"""Convertit les GLB riggés (Site\models_anim, modèles avec animations) en FBX armature + animations,
 4 Blender en parallèle. -> Site\models_anim_fbx\<cat>\<n>.fbx"""
+from config import PROJECT, TOOLS_DIR, BLENDER  # chemins : voir tools/config.py
 import os, json, subprocess, tempfile
 from concurrent.futures import ThreadPoolExecutor
 
-SITE = r"E:\Projets\BloodAndSilver\Site"
-BL = r"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"
+SITE = PROJECT + r"\Site"
+BL = BLENDER
 A = json.load(open(os.path.join(SITE, "models_anim", "anim.json"), encoding="utf-8"))
 pairs = [(os.path.join(SITE, a["file"]), os.path.join(SITE, "models_anim_fbx", a["cat"], a["name"] + ".fbx")) for a in A if a["clips"]]
 todo = [p for p in pairs if not os.path.exists(p[1])]
@@ -13,7 +14,7 @@ print(len(pairs), "modèles animés,", len(todo), "à convertir", flush=True)
 def run(chunk):
     lst = tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8")
     lst.write("\n".join("\t".join(p) for p in chunk)); lst.close()
-    out = subprocess.run([BL, "-b", "--factory-startup", "-P", r"C:\Users\Nauno\.bns_tools\glb2fbx_anim.py", "--", lst.name],
+    out = subprocess.run([BL, "-b", "--factory-startup", "-P", TOOLS_DIR + r"\glb2fbx_anim.py", "--", lst.name],
                          capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
     os.remove(lst.name)
     return [l for l in out.splitlines() if l.startswith(("OK", "ERREUR"))]

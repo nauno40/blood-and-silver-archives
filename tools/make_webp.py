@@ -1,11 +1,12 @@
 r"""Versions WebP pleine résolution de toutes les images, pour l'affichage dans le site.
 Qualité 92 (visuellement identique), canal alpha sans perte. Les PNG d'origine restent la référence
-(boutons « Télécharger »). Sortie : E:\Projets\BloodAndSilver\Site\img\<chemin relatif>.webp"""
+(boutons « Télécharger »). Sortie : <projet>\Site\img\<chemin relatif>.webp"""
+from config import PROJECT  # chemins : voir tools/config.py
 import os, glob, sys
 from concurrent.futures import ProcessPoolExecutor
 from PIL import Image
 
-ROOT = r"E:\Projets\BloodAndSilver"
+ROOT = PROJECT
 OUT = os.path.join(ROOT, "Site", "img")
 SOURCES = ["PNG", "Images_fixes", "Fonds_ecran", "Fonds_ecran_principal", "Pixel_AFK"]
 

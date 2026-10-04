@@ -1,10 +1,11 @@
 r"""Décode intégralement chaque image WebP et chaque MP3 du site pour détecter les fichiers corrompus.
 Images : PIL (décodage complet). MP3 : ffmpeg décode tout le flux sans sortie (-f null), erreurs comptées."""
+from config import PROJECT, FFMPEG  # chemins : voir tools/config.py
 import os, glob, subprocess, sys
 from concurrent.futures import ProcessPoolExecutor
 
-SITE = r"E:\Projets\BloodAndSilver\Site"
-FF = r"C:\Users\Nauno\.bns_tools\venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+SITE = PROJECT + r"\Site"
+FF = FFMPEG
 
 def img(p):
     from PIL import Image

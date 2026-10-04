@@ -4,14 +4,15 @@ Personnage = hiérarchie de SpriteRenderer animée par des AnimationClip Unity :
 Transform (liaisons génériques, chemins = CRC32 relatifs à l'Animator) + échange de sprite (courbes PPtr). On rejoue
 chaque clip à 15 i/s, on compose les sprites (ordre de tri, couleur, retournement), agrandissement x3 au plus proche voisin
 (pixels nets) -> WebP animé sans perte + image fixe. Les ombres de sol colorées (Shadow_Desert / Snow / Grass) sont ignorées.
-Sortie : E:\Projets\BloodAndSilver\Pixel_AFK\<bundle>\<clip>.webp, _image_fixe.png ; Cartes : Pixel_AFK\_sols\<nom>.png ; index.json"""
+Sortie : <projet>\Pixel_AFK\<bundle>\<clip>.webp, _image_fixe.png ; Cartes : Pixel_AFK\_sols\<nom>.png ; index.json"""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, sys, re, json, math, zlib, glob, traceback
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 
-TOOLS = r"C:\Users\Nauno\.bns_tools"
-ASSETS = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
-AFK_OUT = r"E:\Projets\BloodAndSilver\Pixel_AFK"
+TOOLS = TOOLS_DIR
+ASSETS = ASSETS
+AFK_OUT = PROJECT + r"\Pixel_AFK"
 FPS, UP = 15, 3
 
 def setup():

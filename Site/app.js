@@ -356,16 +356,16 @@ function characterDetail(id) {
     if (!key) {
       vid.pause(); vid.hidden = true; vid.removeAttribute("src"); img.hidden = false; img.src = c.still;
       $("#full").href = c.still; $("#dl").href = c.stillPng || c.still; $("#dl2").hidden = true;
-      $("#animName").textContent = "Image fixe — affichage WebP, téléchargement en PNG transparent haute résolution";
+      $("#animName").textContent = c.webp === false ? "Image fixe (WebP transparent haute résolution)" : "Image fixe — affichage WebP, téléchargement en PNG transparent haute résolution";
       return;
     }
     $("#dl").href = webmOf(key); $("#dl").textContent = "Télécharger (WebM)";
-    $("#dl2").hidden = false; $("#dl2").href = webpOf(key); $("#full").href = useWebm ? webmOf(key) : webpOf(key);
+    $("#dl2").hidden = c.webp === false; $("#dl2").href = webpOf(key); $("#full").href = useWebm ? webmOf(key) : webpOf(key);
     if (useWebm) {
       img.hidden = true; vid.hidden = false; vid.src = webmOf(key);
-      vid.onerror = () => { useWebm = false; set(key); };
+      vid.onerror = () => { if (c.webp === false) return; useWebm = false; set(key); };
       vid.play().catch(() => {});
-      $("#animName").textContent = `Animation « ${key} » — WebM VP9 transparent (aussi disponible en WebP animé)`;
+      $("#animName").textContent = `Animation « ${key} » — WebM VP9 transparent` + (c.webp === false ? "" : " (aussi disponible en WebP animé)");
     } else {
       vid.hidden = true; img.hidden = false; img.src = webpOf(key);
       $("#animName").textContent = `Animation « ${key} » — WebP animé transparent`;
@@ -588,7 +588,7 @@ function texturesPage(...parts) {
       if (group && !T[group]) { main.insertAdjacentHTML("beforeend", `<p class="empty">Le dossier « ${esc(group)} » n'existe pas (images identiques regroupées dans un autre dossier).</p>`); return; }
       if (group && T[group]) items = T[group].filter(n => !s || n.toLowerCase().includes(s) || group.toLowerCase().includes(s)).map(n => ({ g: group, n }));
       else items = s ? flat().filter(x => x.n.toLowerCase().includes(s) || x.g.toLowerCase().includes(s)) : flat();
-      const list = items.map(x => ({ name: `${x.g}/${x.n}`, file: `img/PNG/${x.g}/${x.n}.webp`, png: `../PNG/${x.g}/${x.n}.png`, thumb: `thumbs/PNG/${x.g}/${x.n}.webp`, tex3d: true }));
+      const list = items.map(x => ({ name: `${x.g}/${x.n}`, file: `img/PNG/${x.g}/${x.n}.webp`, png: (D.stats || {}).release ? "" : `../PNG/${x.g}/${x.n}.png`, thumb: `thumbs/PNG/${x.g}/${x.n}.webp`, tex3d: true }));
       main.insertAdjacentHTML("beforeend", `<div class="toolbar"><b>${esc(group || "Tous les dossiers")}</b><span class="count">${list.length} images</span></div>`);
       paged(main, list, (p, i) => card({ img: p.thumb, title: p.name.split("/").pop(), sub: group ? "" : p.name.split("/").slice(0, -1).join("/"), onClick: () => lightbox(list, i) }), "grid small");
     };

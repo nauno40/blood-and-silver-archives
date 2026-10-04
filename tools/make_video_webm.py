@@ -1,10 +1,11 @@
 r"""Version WebM (VP9 CRF 28 + Opus 160k) de chaque vidéo du site : Site\videos\<nom>.mp4 -> Site\videos_webm\<nom>.webm.
 Les sous-titres restent des fichiers .vtt séparés (inchangés)."""
+from config import PROJECT, FFMPEG  # chemins : voir tools/config.py
 import os, glob, subprocess
 from concurrent.futures import ThreadPoolExecutor
 
-SITE = r"E:\Projets\BloodAndSilver\Site"
-FF = r"C:\Users\Nauno\.bns_tools\venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+SITE = PROJECT + r"\Site"
+FF = FFMPEG
 OUT = os.path.join(SITE, "videos_webm")
 os.makedirs(OUT, exist_ok=True)
 

@@ -3,9 +3,18 @@
 Archive non officielle et hors ligne du jeu mobile **Blood and Silver** (Moonton, `com.moonton.silverblood.eu`) :
 outils d'extraction des données du jeu installées sur un téléphone Android et site web local pour tout consulter.
 
-> ⚠️ Ce dépôt ne contient **aucun média du jeu** (images, modèles 3D, animations, sons, vidéos) : ils restent la propriété
-> de leurs ayants droit et se régénèrent localement à partir d'une installation du jeu avec les scripts de `tools/`.
-> Seuls le code du site, les outils et les fichiers de données générés (`Site/data/`) sont versionnés.
+## Installation
+
+1. Télécharger le dépôt (bouton **Code → Download ZIP**, ou `git clone`) et le décompresser.
+2. Installer [Python 3](https://www.python.org/downloads/) si ce n'est pas déjà fait.
+3. Double-cliquer sur **`Installer les ressources.bat`** : il télécharge depuis la Release
+   [`ressources-v1`](../../releases/tag/ressources-v1) les archives de ressources (~24 Go : images, animations, modèles 3D
+   GLB + FBX, sons, vidéos…), les vérifie et les décompresse au bon endroit. Prévoir ~50 Go libres pendant l'installation ;
+   en cas de coupure, relancer : l'installation reprend où elle s'était arrêtée.
+   (Équivalent manuel : télécharger les `bns-ressources-NN.zip` de la Release et les décompresser à la racine du projet.)
+4. Double-cliquer sur **`Ouvrir le site.bat`**.
+
+Le code du site, les outils et les données générées (`Site/data/`) sont dans Git ; les médias sont dans la Release.
 
 ## Le site
 
@@ -23,30 +32,40 @@ Application web statique (HTML / JS / CSS, sans framework), servie par un petit 
 | Pixel art | personnages et monstres du mode AFK recomposés et animés, cartes de sol |
 | Polices, Vidéos, Audio, Données | polices du jeu, cinématiques sous-titrées, ~24 000 sons Wwise, textes et tables de configuration |
 
-Lancement : double-cliquer sur **`Ouvrir le site.bat`** (Python requis), qui démarre `Site/serveur.py`
-(port 8777 par défaut, prise exclusive, port suivant si occupé, prise en charge des requêtes Range) et ouvre le navigateur.
-Sans les médias régénérés, le site s'ouvre mais les images / modèles / sons sont absents.
+`Ouvrir le site.bat` démarre `Site/serveur.py` (port 8777 par défaut, port suivant si occupé, requêtes Range pour les
+vidéos et sons) et ouvre le navigateur. Le site doit être servi par ce serveur (pas ouvert en `file://`).
 
-## Les outils (`tools/`)
+## Les outils (`tools/`) — régénérer les ressources
 
-Scripts Python (UnityPy, trimesh, Pillow, numpy) et Node (rendu Spine avec `@esotericsoftware/spine-core` + `@napi-rs/canvas`),
-FFmpeg, vgmstream (audio Wwise) et Blender (conversion FBX). Principales étapes :
+Inutile pour simplement consulter le site (les ressources sont dans la Release). Pour tout refaire à partir du jeu :
 
-| Étape | Scripts |
-|---|---|
-| Recensement des bundles Unity | `census.py`, `cab_index.py`, `sprite_index.py` |
-| Images | `extract_png.py`, `extract_png_missing.py`, `extract_cubemaps.py`, `make_webp.py`, `make_thumbs.py` |
-| Spine | `dump_spine.py`, `render/render.mjs` (+ `layers.mjs`), `render_all.py`, `make_webm.py` |
-| Fonds de l'écran principal | `compose_mainbg.py` |
-| Modèles 3D | `export_3d.py` (GLB statiques, textures retrouvées par nom avec `tex_by_name.py`), `export_rigged.py` (squelettes + animations), `run_fbx.py`, `run_fbx_anim.py` (Blender) |
-| Shaders | `extract_shaders.py`, `shader_by_material.py`, `export_shader_materials.py`, `export_shader_examples.py` |
-| Pixel art (AFK) | `render_afk.py` |
-| Audio / vidéo | `convert_audio.py`, `make_mp3.py`, `remux_videos.py`, `mux_video_audio.py`, `make_video_webm.py` |
-| Données du site | `build_site.py` (génère `Site/data/*.js`) |
-| Vérification | `verify_site.py` (chaque fichier référencé existe + cohérence entre rubriques) |
+**Prérequis** : Python 3.12 (`pip install -r tools/requirements.txt` : UnityPy, numpy, Pillow, trimesh, lz4, imageio-ffmpeg —
+ce dernier fournit FFmpeg), Node.js (`npm install` dans `tools/render/`), [vgmstream](https://vgmstream.org) (audio Wwise, dans
+`tools/vgmstream/`) et Blender 5.x (FBX). Les chemins sont calculés depuis l'emplacement du dépôt (`tools/config.py`) ;
+variables `BNS_PROJECT`, `BNS_FFMPEG`, `BNS_BLENDER`, `BNS_VGMSTREAM` pour les adapter.
 
-Les chemins sont ceux de la machine d'origine (`E:\Projets\BloodAndSilver\…`, outils dans `C:\Users\…\.bns_tools`) :
-à adapter en tête de chaque script.
+**Données du jeu** : copier le dossier `Android/data/com.moonton.silverblood.eu/` du téléphone dans `data/` à la racine du dépôt.
+
+**Ordre d'exécution** (`python tools/<script>.py`) :
+
+| # | Étape | Scripts |
+|---|---|---|
+| 1 | Recensement des bundles Unity | `census.py`, `cab_index.py`, `sprite_index.py` |
+| 2 | Images | `extract_png.py`, `extract_png_missing.py`, `extract_cubemaps.py` |
+| 3 | Fonds d'écran | `find_bg.py`, `copy_bg.py`, `compose_mainbg.py` (écran principal recomposé) |
+| 4 | Spine 2D | `dump_spine.py`, `render_all.py` (Node : `render/render.mjs`, `layers.mjs`), `make_webm.py` |
+| 5 | Modèles 3D | `list_extra_models.py`, `export_3d.py` puis `export_3d.py @tools/extra_files.txt`, `export_rigged.py`, `run_fbx.py`, `run_fbx_anim.py` (Blender : `glb2fbx*.py`, `check_fbx.py`) — textures retrouvées par nom avec `tex_by_name.py` |
+| 6 | Shaders | `extract_shaders.py`, `shader_by_material.py`, `export_shader_materials.py`, `export_shader_examples.py` |
+| 7 | Pixel art (AFK) | `render_afk.py` |
+| 8 | Audio / vidéo | `convert_audio.py`, `make_mp3.py`, `remux_videos.py`, `mux_video_audio.py`, `make_video_webm.py` |
+| 9 | Images pour le site | `make_webp.py`, `make_thumbs.py` |
+| 10 | Données du site | `build_site.py` (génère `Site/data/*.js`) |
+| 11 | Vérification | `verify_site.py` (chaque fichier référencé existe + cohérence entre rubriques), `decode_check.py` (décodage des médias) |
+| 12 | Distribution | `pack_release.py` (archives ≤ 1,9 Go pour la Release) ; `install_resources.py` côté utilisateur |
+
+Les vignettes des modèles 3D ont été rendues dans le navigateur avec le visualiseur du site (`Site/viewer3d.js`).
+`build_site.py` génère par défaut les données « release » (sans liens vers les originaux PNG / animations WebP, non distribués) ;
+`BNS_FULL=1` pour un site local qui les référence.
 
 ### Points techniques notables
 

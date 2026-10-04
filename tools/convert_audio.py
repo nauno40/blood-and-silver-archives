@@ -1,14 +1,15 @@
 r"""Convertit tous les sons Wwise du jeu (.wem isolés + contenu des banques .bnk) en .ogg (Vorbis q6),
 nommés d'après SoundbanksInfo.xml et classés par catégorie.
-Sortie : E:\Projets\BloodAndSilver\Site\audio\<categorie>\<nom>.ogg + audio.json (manifeste pour le site)."""
+Sortie : <projet>\Site\audio\<categorie>\<nom>.ogg + audio.json (manifeste pour le site)."""
+from config import PROJECT, ASSETS, FFMPEG, VGMSTREAM  # chemins : voir tools/config.py
 import os, re, json, glob, shutil, subprocess, tempfile, hashlib
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 
-SRC = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets\Audio\Android"
-OUT = r"E:\Projets\BloodAndSilver\Site\audio"
-VGM = r"C:\Users\Nauno\.bns_tools\vgmstream\vgmstream-cli.exe"
-FF = r"C:\Users\Nauno\.bns_tools\venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+SRC = ASSETS + r"\Audio\Android"
+OUT = PROJECT + r"\Site\audio"
+VGM = VGMSTREAM
+FF = FFMPEG
 
 # --- 1. noms : identifiant de média -> (nom court, langue, banques, événements) ------------------
 root = ET.parse(os.path.join(SRC, "SoundbanksInfo.xml")).getroot()

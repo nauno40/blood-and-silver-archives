@@ -1,12 +1,13 @@
 r"""Rend toutes les animations de tous les squelettes Spine extraits.
-Sortie : E:\Projets\BloodAndSilver\Animations\<bundle>\<squelette>\<animation>.(webm|webp|gif|png)
+Sortie : <projet>\Animations\<bundle>\<squelette>\<animation>.(webm|webp|gif|png)
 Reprise : un squelette déjà terminé (fichier .done) est sauté."""
+from config import PROJECT, TOOLS_DIR  # chemins : voir tools/config.py
 import hashlib, json, os, subprocess, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-SPINE = r"E:\Projets\BloodAndSilver\Spine"
-OUT = r"E:\Projets\BloodAndSilver\Animations"
-RENDER = r"C:\Users\Nauno\.bns_tools\render\render.mjs"
+SPINE = PROJECT + r"\Spine"
+OUT = PROJECT + r"\Animations"
+RENDER = TOOLS_DIR + r"\render\render.mjs"
 LOG = os.path.join(OUT, "render_errors.txt")
 WORKERS = 6  # chaque rendu lance aussi ffmpeg (multi-thread)
 

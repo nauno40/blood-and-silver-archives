@@ -1,15 +1,16 @@
 r"""Extrait les shaders du jeu (objets Shader des bundles) : pour chaque shader distinct,
-  E:\Projets\BloodAndSilver\Shaders\<Nom>\<Nom>.shader  : squelette ShaderLab lisible (propriétés + valeurs par défaut,
+  <projet>\Shaders\<Nom>\<Nom>.shader  : squelette ShaderLab lisible (propriétés + valeurs par défaut,
                                                           sous-shaders, passes, états de rendu, tags, mots-clés)
-  E:\Projets\BloodAndSilver\Shaders\<Nom>\glsl\NNN_<etape>.glsl : programmes GPU OpenGL ES 3 (source GLSL, plateforme 9),
+  <projet>\Shaders\<Nom>\glsl\NNN_<etape>.glsl : programmes GPU OpenGL ES 3 (source GLSL, plateforme 9),
                                                           décompressés (LZ4) du blob du shader, doublons retirés.
 Toutes les copies d'un même shader (une par bundle, souvent partielles) sont fusionnées. Index : Shaders\index.json"""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, json, hashlib
 from concurrent.futures import ProcessPoolExecutor
 
-ASSETS = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
-OUT = r"E:\Projets\BloodAndSilver\Shaders"
-CENSUS = r"C:\Users\Nauno\.bns_tools\census.json"
+ASSETS = ASSETS
+OUT = PROJECT + r"\Shaders"
+CENSUS = TOOLS_DIR + r"\census.json"
 PLATFORMS = {0: "OpenGL", 4: "D3D11", 5: "GLES2", 9: "GLES3", 14: "Metal", 15: "OpenGLCore", 18: "Vulkan", 19: "Switch"}
 PROPTYPE = {0: "Color", 1: "Vector", 2: "Float", 3: "Range", 4: "2D", 5: "Int"}
 TEXDIM = {2: "2D", 3: "3D", 4: "Cube", 5: "2DArray", 6: "CubeArray"}

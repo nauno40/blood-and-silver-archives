@@ -1,9 +1,10 @@
 # Tout est ignoré par défaut : seuls le code, les outils et les données du site sont versionnés.
-# Les médias extraits du jeu (images, modèles, sons, vidéos…) ne sont PAS publiés.
+# Les médias (images, modèles, sons, vidéos…) ne sont pas dans Git : ils sont distribués dans la Release « ressources-v1 ».
 /*
 !/.gitignore
 !/README.md
 !/Ouvrir le site.bat
+!/Installer les ressources.bat
 !/tools/
 !/Site/
 
@@ -21,3 +22,13 @@
 __pycache__/
 *.pyc
 node_modules/
+
+# caches et fichiers générés par les outils
+/tools/*.json
+/tools/*.txt
+!/tools/requirements.txt
+/tools/*.pkl
+/tools/venv/
+/tools/vgmstream/
+/release/
+/.ressources_installees

@@ -1,0 +1,6 @@
+UnityPy==1.25.3
+numpy
+Pillow
+trimesh
+lz4
+imageio-ffmpeg

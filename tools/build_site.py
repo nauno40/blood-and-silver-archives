@@ -1,14 +1,18 @@
-﻿r"""Génère les données du site E:\Projets\BloodAndSilver\Site (fichiers data/*.js chargés par index.html).
+r"""Génère les données du site <projet>\Site (fichiers data/*.js chargés par index.html).
 Chemins des médias relatifs au dossier Site (../Animations/..., ../PNG/..., etc.)."""
+from config import PROJECT, ASSETS, FFMPEG  # chemins : voir tools/config.py
 import os, re, json, glob, shutil, subprocess, struct
 from collections import defaultdict
 import UnityPy
 
-ROOT = r"E:\Projets\BloodAndSilver"
+ROOT = PROJECT
 SITE = os.path.join(ROOT, "Site")
-ASSETS = os.path.join(ROOT, r"data\com.moonton.silverblood.eu\files\dragon2019\assets")
-FF = r"C:\Users\Nauno\.bns_tools\venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+ASSETS = ASSETS
+FF = FFMPEG
 DATA = os.path.join(SITE, "data")
+# Mode « release » (par défaut) : les originaux non distribués (PNG, animations WebP) ne sont pas référencés.
+# BNS_FULL=1 pour un site local complet avec liens vers les originaux.
+RELEASE = os.environ.get("BNS_FULL") != "1"
 os.makedirs(DATA, exist_ok=True)
 
 def rel(p): return os.path.relpath(p, SITE).replace("\\", "/")
@@ -70,7 +74,7 @@ for still in sorted(glob.glob(os.path.join(ANIM, "*", "*", "_image_fixe.png")), 
     kind = "personnage" if f else ("lounge" if "lounge" in bundle.lower() or bundle.lower().startswith("ui_lounge") else "autre")
     chars.append({"id": f"{bundle}/{skel}", "bundle": bundle, "skel": skel,
                   "name": f["name"] if f else bundle, "skin": f["skin"] if f else "", "skinId": f["skinId"] if f else "",
-                  "kind": kind, "still": web(still), "stillPng": rel(still), "thumb": thumb(still),
+                  "kind": kind, "still": web(still), "stillPng": web(still) if RELEASE else rel(still), "webp": not RELEASE, "thumb": thumb(still),
                   "dir": rel(sdir), "anims": anims, "spine": spine})
 write("characters", chars)
 
@@ -83,7 +87,7 @@ pdirs = [d_ for d_ in glob.glob(os.path.join(ROOT, "PNG", "UI", "Atlas_*"))
                                                                   os.path.basename(d_))]
 for d_ in sorted(pdirs, key=str.lower):
     for p in sorted(glob.glob(os.path.join(d_, "*.png"))):
-        portraits.append({"file": web(p), "png": rel(p), "thumb": thumb(p), "name": os.path.splitext(os.path.basename(p))[0],
+        portraits.append({"file": web(p), "png": "" if RELEASE else rel(p), "thumb": thumb(p), "name": os.path.splitext(os.path.basename(p))[0],
                           "atlas": os.path.basename(d_)})
 write("portraits", portraits)
 for c in chars:
@@ -149,9 +153,9 @@ print(len(heroes), "héros,", sum(len(h["skins"]) for h in heroes.values()), "te
 write("characters", chars)
 
 # --- fonds ------------------------------------------------------------------------------------
-write("mainbg", [{"file": web(p), "png": rel(p), "thumb": thumb(p), "name": os.path.splitext(os.path.basename(p))[0]}
+write("mainbg", [{"file": web(p), "png": "" if RELEASE else rel(p), "thumb": thumb(p), "name": os.path.splitext(os.path.basename(p))[0]}
                  for p in sorted(glob.glob(os.path.join(ROOT, "Fonds_ecran_principal", "*.png")))])
-write("backgrounds", [{"file": web(p), "png": rel(p), "thumb": thumb(p), "name": os.path.splitext(os.path.basename(p))[0]}
+write("backgrounds", [{"file": web(p), "png": "" if RELEASE else rel(p), "thumb": thumb(p), "name": os.path.splitext(os.path.basename(p))[0]}
                       for p in sorted(glob.glob(os.path.join(ROOT, "Fonds_ecran", "*.png")), key=str.lower)])
 
 # --- toutes les textures (PNG/<dossier>/<bundle>/*.png) ---------------------------------------
@@ -283,7 +287,7 @@ stats = {"heroes": len(heroes), "heroesAnimated": len({c.get("heroId") for c in 
          "textures": sum(len(v) for v in tex.values()), "models": len(models), "modelsAnimated": sum(1 for m in models if m.get("rig")),
          "modelCats": {c_: sum(1 for m in models if m["cat"] == c_) for c_ in sorted({m["cat"] for m in models})},
          "shaders": len(shaders), "pixel": len(pixel), "pixelAnims": sum(len(x["clips"]) for x in pixel),
-         "tables": len(tables),
+         "tables": len(tables), "release": RELEASE,
          "modelSamples": [m["thumb"] for m in models if m["cat"] in ("personnages", "monstres") and m.get("rig")][:400:8],
          "mapSamples": [m["thumb"] for m in models if m["cat"] == "cartes" and (m.get("meshes") or 0) >= 400 and (m.get("textured") or 0) >= 0.95 * m["meshes"]]}
 write("stats", stats)

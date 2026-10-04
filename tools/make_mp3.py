@@ -1,10 +1,11 @@
 r"""Version MP3 (LAME VBR V2, ~190 kb/s) de chaque son du site, pour une compatibilité maximale.
 Site\audio\<cat>\<nom>.ogg -> Site\audio_mp3\<cat>\<nom>.mp3"""
+from config import PROJECT, FFMPEG  # chemins : voir tools/config.py
 import os, glob, subprocess
 from concurrent.futures import ThreadPoolExecutor
 
-SITE = r"E:\Projets\BloodAndSilver\Site"
-FF = r"C:\Users\Nauno\.bns_tools\venv\Lib\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+SITE = PROJECT + r"\Site"
+FF = FFMPEG
 
 def job(src):
     dst = os.path.join(SITE, "audio_mp3", os.path.splitext(os.path.relpath(src, os.path.join(SITE, "audio")))[0] + ".mp3")

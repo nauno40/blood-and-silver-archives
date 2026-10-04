@@ -2,13 +2,14 @@ r"""Extrait les Cubemap (ciels 360° / reflets des cartes) en image « croix » 
             +Y
        -X   +Z   +X   -Z
             -Y
-Sortie : E:\Projets\BloodAndSilver\PNG\Cubemaps\<bundle>\<nom>.png (doublons de pixels ignorés)."""
+Sortie : <projet>\PNG\Cubemaps\<bundle>\<nom>.png (doublons de pixels ignorés)."""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, json, hashlib
 from concurrent.futures import ProcessPoolExecutor
 
-ASSETS = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
-OUT = r"E:\Projets\BloodAndSilver\PNG\Cubemaps"
-CENSUS = r"C:\Users\Nauno\.bns_tools\census.json"
+ASSETS = ASSETS
+OUT = PROJECT + r"\PNG\Cubemaps"
+CENSUS = TOOLS_DIR + r"\census.json"
 BAD = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
 
 def faces(t):

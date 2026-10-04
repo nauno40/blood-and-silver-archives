@@ -1,9 +1,10 @@
-﻿r"""Index « nom interne CAB-xxxx -> fichier bundle » pour résoudre les références entre bundles
-(textures partagées des décors / personnages). Sortie : C:\Users\Nauno\.bns_tools\cab_index.json"""
+r"""Index « nom interne CAB-xxxx -> fichier bundle » pour résoudre les références entre bundles
+(textures partagées des décors / personnages). Sortie : tools\cab_index.json"""
+from config import TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, glob, json
 from concurrent.futures import ProcessPoolExecutor
 
-A = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
+A = ASSETS
 
 def job(p):
     import UnityPy
@@ -21,5 +22,5 @@ if __name__ == "__main__":
         for k, (p, cabs) in enumerate(ex.map(job, files, chunksize=32), 1):
             for c in cabs: idx[c.split(".")[0].lower()] = p
             if k % 2000 == 0: print(k, len(files), flush=True)
-    json.dump(idx, open(r"C:\Users\Nauno\.bns_tools\cab_index.json", "w"), indent=0)
+    json.dump(idx, open(TOOLS_DIR + r"\cab_index.json", "w"), indent=0)
     print("TERMINE", len(idx), "CAB indexés", flush=True)

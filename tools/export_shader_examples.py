@@ -2,14 +2,15 @@ r"""Exemples d'aperçu pour chaque shader, pris sur les modèles du jeu : pour c
 PNJ, cartes…), matériau -> shader ; on garde par shader les 3 meilleurs exemples (le plus de textures trouvées, pièce assez grande)
 et on exporte la pièce (mesh_mK.json), les valeurs du matériau et ses textures. Complète shader_preview\<dossier>\material.json :
 les matériaux sans pièce trouvés par export_shader_materials.py restent en fin de liste (aperçu sur boule / plan)."""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, json, glob
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 
-ROOT = r"E:\Projets\BloodAndSilver"
-A = os.path.join(ROOT, r"data\com.moonton.silverblood.eu\files\dragon2019\assets")
+ROOT = PROJECT
+A = ASSETS
 OUT = os.path.join(ROOT, "Site", "shader_preview")
-TOOLS = r"C:\Users\Nauno\.bns_tools"
+TOOLS = TOOLS_DIR
 BAD = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
 
 def scan(path):

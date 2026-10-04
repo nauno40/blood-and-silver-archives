@@ -1,8 +1,9 @@
 """Index des textures extraites (PNG) par nom normalisé, pour retexturer les matériaux dont la texture
 d'origine est dans un bundle absent du téléphone (décors ExHall/Ophall…)."""
+from config import PROJECT, TOOLS_DIR  # chemins : voir tools/config.py
 import os, re, json
-PNG = r"E:\Projets\BloodAndSilver\PNG"
-IDX = r"C:\Users\Nauno\.bns_tools\tex_by_name.json"
+PNG = PROJECT + r"\PNG"
+IDX = TOOLS_DIR + r"\tex_by_name.json"
 SUFFIX = {"d": "diffuse", "diffuse": "diffuse", "albedo": "diffuse", "c": "diffuse", "col": "diffuse", "color": "diffuse", "basecolor": "diffuse",
           "ems": "emissive", "emissive": "emissive", "e": "emissive", "emi": "emissive"}
 

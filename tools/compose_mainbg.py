@@ -6,23 +6,32 @@ dessine :
   - Image / RawImage : sprite étiré dans son RectTransform, teinté par m_Color (x alpha des CanvasGroup) ;
   - SkeletonGraphic  : squelette Spine rendu à son emplacement (render.mjs --fixedscale), pose
                        de départ de startingAnimation.
-Sortie : E:\\Projets\\BloodAndSilver\\Fonds_ecran_principal\\NN - <prefab>.png
+Sortie : <projet>\\Fonds_ecran_principal\\NN - <prefab>.png
 """
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, subprocess, tempfile, json
 import UnityPy
 from PIL import Image
 
-A = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets\UI"
-SPINE = r"E:\Projets\BloodAndSilver\Spine"
-OUT = r"E:\Projets\BloodAndSilver\Fonds_ecran_principal"
-RENDER = r"C:\Users\Nauno\.bns_tools\render\render.mjs"
+A = ASSETS + r"\UI"
+SPINE = PROJECT + r"\Spine"
+OUT = PROJECT + r"\Fonds_ecran_principal"
+RENDER = TOOLS_DIR + r"\render\render.mjs"
 SS = 1  # facteur de rendu (1 = 2880x1440, résolution native du canevas)
 
 def load(path):
     d = open(path, "rb").read(); i = d.find(b"UnityFS\x00")
     return UnityPy.load(d[i:] if i > 0 else d)
 
-table = open(r"C:\Users\Nauno\.bns_tools\MainBackground.bin", "rb").read()
+def _table(name):  # table de configuration du jeu (TextAsset du bundle Document)
+    env = load(os.path.join(ASSETS, "Document", "Document.unity3d"))
+    for o in env.objects:
+        if o.type.name == "TextAsset" and o.peek_name() == name:
+            sc = o.read().m_Script
+            return sc.encode("utf-8", "surrogateescape") if isinstance(sc, str) else bytes(sc)
+    raise SystemExit(f"table {name} introuvable")
+
+table = _table("MainBackground")
 prefabs = [m.decode().split("Atlas")[0] for m in re.findall(rb"ui_panel_[A-Za-z0-9_]+", table)]
 prefabs = [p[:-1] if not os.path.exists(os.path.join(A, p + ".unity3d")) else p for p in prefabs]
 

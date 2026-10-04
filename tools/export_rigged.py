@@ -8,19 +8,20 @@ r"""Exporte les modèles 3D du jeu AVEC squelette (rig) et animations en GLB (gl
 - Repère : Unity (main gauche) -> glTF (main droite) par symétrie X : position (-x,y,z), quaternion (x,-y,-z,w),
   matrices S·M·S, ordre des triangles inversé.
 Sortie : Site\models_anim\<cat>\<nom>.glb + anim.json (liste des clips par modèle)."""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, sys, glob, json, struct, zlib, io, traceback, math
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 
-ASSETS = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
+ASSETS = ASSETS
 A = os.path.join(ASSETS, "ABResource")
 ANI = os.path.join(ASSETS, "ABResourceSingle")
 FPS = 30
 
 # réutilise le chargement, la résolution inter-bundles, la recherche de texture et la règle d'alpha d'export_3d.py
-_src = open(r"C:\Users\Nauno\.bns_tools\export_3d.py", encoding="utf-8-sig").read()
+_src = open(TOOLS_DIR + r"\export_3d.py", encoding="utf-8-sig").read()
 exec(_src.split("def category")[0])
-OUT = r"E:\Projets\BloodAndSilver\Site\models_anim"  # après l'exec : export_3d.py définit aussi OUT
+OUT = PROJECT + r"\Site\models_anim"  # après l'exec : export_3d.py définit aussi OUT
 
 S = np.diag([-1.0, 1, 1, 1])
 
@@ -121,7 +122,8 @@ def export(path):
     from PIL import Image
     from UnityPy.helpers.MeshHelper import MeshHandler
     name = os.path.splitext(os.path.basename(path))[0]
-    _ex = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra_cats.json")))
+    _xf = os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra_cats.json")
+    _ex = json.load(open(_xf)) if os.path.exists(_xf) else {}  # généré par list_extra_models.py
     cat = _ex.get(name) or ("personnages" if name.startswith("C_") else "monstres" if name.startswith("M_") else "decors")
     dst = os.path.join(OUT, cat, name + ".glb")
     try:
@@ -394,9 +396,10 @@ def export(path):
         return {"name": name, "cat": cat, "error": f"{type(e).__name__}: {e}", "tb": traceback.format_exc()[-600:]}
 
 if __name__ == "__main__":
-    names = [os.path.splitext(os.path.basename(p))[0] for p in glob.glob(r"E:\Projets\BloodAndSilver\Site\models\*\*.glb")]
+    names = [os.path.splitext(os.path.basename(p))[0] for p in glob.glob(PROJECT + r"\Site\models\*\*.glb")]
     if len(sys.argv) > 1: names = [n for n in names if any(re.fullmatch(a, n) for a in sys.argv[1:])]
-    _paths = {os.path.splitext(os.path.basename(l.strip()))[0]: l.strip() for l in open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra_files.txt"), encoding="utf-8")}
+    _xl = os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra_files.txt")
+    _paths = {os.path.splitext(os.path.basename(l.strip()))[0]: l.strip() for l in open(_xl, encoding="utf-8")} if os.path.exists(_xl) else {}
     files = [_paths.get(n, os.path.join(A, n + ".unity3d")) for n in sorted(names)]
     print(len(files), "modèles", flush=True)
     res = []

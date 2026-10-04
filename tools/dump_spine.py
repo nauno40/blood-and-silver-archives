@@ -1,10 +1,11 @@
-﻿r"""Extrait chaque squelette Spine (skel/json + atlas + textures de l'atlas) dans
-E:\Projets\BloodAndSilver\Spine\<bundle>\<squelette>\ et Ã©crit un inventaire."""
+r"""Extrait chaque squelette Spine (skel/json + atlas + textures de l'atlas) dans
+<projet>\Spine\<bundle>\<squelette>\ et Ã©crit un inventaire."""
+from config import PROJECT, ASSETS  # chemins : voir tools/config.py
 import os, glob, re, json
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-ASSETS = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
-OUT = r"E:\Projets\BloodAndSilver\Spine"
+ASSETS = ASSETS
+OUT = PROJECT + r"\Spine"
 
 def safe(n):
     return re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", n).strip() or "unnamed"

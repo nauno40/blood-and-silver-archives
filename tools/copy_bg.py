@@ -1,10 +1,11 @@
 """Copie les fonds d'écran retenus (bg_candidates.json moins les exclusions issues de la revue
-visuelle) dans E:\\Projets\\BloodAndSilver\\Fonds_ecran, en gardant le nom de texture du jeu."""
+visuelle) dans <projet>\\Fonds_ecran, en gardant le nom de texture du jeu."""
+from config import PROJECT, TOOLS_DIR  # chemins : voir tools/config.py
 import json, os, shutil
 from collections import Counter
 
-cands = json.load(open(r"C:\Users\Nauno\.bns_tools\bg_candidates.json", encoding="utf-8"))
-OUT = r"E:\Projets\BloodAndSilver\Fonds_ecran"
+cands = json.load(open(TOOLS_DIR + r"\bg_candidates.json", encoding="utf-8"))
+OUT = PROJECT + r"\Fonds_ecran"
 
 # Indices écartés à la revue : captures de tutoriel / plans de jeu avec interface, fonds unis ou
 # presque vides, parchemins et cartes vierges, gabarits.

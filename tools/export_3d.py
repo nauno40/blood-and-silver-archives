@@ -3,14 +3,15 @@ r"""Exporte les modèles 3D du jeu (personnages C_*, monstres M_*, décors *_Sce
 Pour chaque bundle : chaque (Skinned)MeshRenderer actif -> maillage en pose de référence, placé avec la
 matrice monde de son GameObject, matériau = texture principale du matériau Unity. Repère Unity (main gauche)
 converti en glTF (main droite) : X inversé + ordre des triangles inversé.
-Sortie : E:\Projets\BloodAndSilver\Site\models\<categorie>\<bundle>.glb + models.json + vignette PNG."""
+Sortie : <projet>\Site\models\<categorie>\<bundle>.glb + models.json + vignette PNG."""
+from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, re, sys, glob, json, io, traceback
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from concurrent.futures import ProcessPoolExecutor
 
-A = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets\ABResource"
-OUT = r"E:\Projets\BloodAndSilver\Site\models"
+A = ASSETS + r"\ABResource"
+OUT = PROJECT + r"\Site\models"
 
 def load(p):
     import UnityPy
@@ -32,7 +33,7 @@ def resolve(assets_file, ptr):
         return None
     cab = ext.split("/")[-1].split(".")[0].lower()
     if _CAB is None:
-        _CAB = json.load(open(r"C:\Users\Nauno\.bns_tools\cab_index.json"))
+        _CAB = json.load(open(TOOLS_DIR + r"\cab_index.json"))
     p = _CAB.get(cab)
     if not p: return None
     if p not in _EXT:

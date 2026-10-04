@@ -1,32 +1,45 @@
 r"""Vérification complète du site : chaque fichier référencé par les données existe et n'est pas vide."""
+from config import PROJECT  # chemins : voir tools/config.py
 import json, os, urllib.parse
 from collections import Counter
 
-SITE = r"E:\Projets\BloodAndSilver\Site"
+SITE = PROJECT + r"\Site"
 def load(n):
     t = open(os.path.join(SITE, "data", n + ".js"), encoding="utf-8").read()
     return json.loads(t[t.index("] = ") + 4: t.rstrip().rindex(";")])
 checked, bad = Counter(), []
+REL = load("stats").get("release", False)
+# racines distribuées dans les archives de la Release (tout fichier référencé doit s'y trouver)
+PACK = ["Site/img", "Site/thumbs", "Site/anim", "Site/audio", "Site/audio_mp3", "Site/videos", "Site/videos_webm", "Site/posters", "Site/subs",
+        "Site/models", "Site/models_fbx", "Site/models_anim", "Site/models_anim_fbx", "Site/shader_preview", "Spine", "Pixel_AFK", "Shaders", "Polices"]
+ROOTDIR = os.path.dirname(SITE); outside = Counter()
 def chk(kind, p):
     if not p:
         bad.append((kind, "(chemin vide)")); return
     f = os.path.normpath(os.path.join(SITE, urllib.parse.unquote(p)))
     checked[kind] += 1
     if not os.path.isfile(f) or os.path.getsize(f) == 0: bad.append((kind, p))
+    r_ = os.path.relpath(f, ROOTDIR).replace(os.sep, "/")
+    if not r_.startswith("Site/") or r_.count("/") > 1:
+        if not any(r_.startswith(x + "/") for x in PACK) and not r_.startswith(("Site/lib/", "Site/data/")) and r_.count("/") > 1: outside[kind] += 1
 
 for c in load("characters"):
     chk("personnage: image fixe (WebP)", c["still"]); chk("personnage: image fixe (PNG)", c["stillPng"]); chk("personnage: miniature", c["thumb"])
     for a in c["anims"]:
-        chk("animation WebP", f'{c["dir"]}/{a}.webp')
+        if c.get("webp", True): chk("animation WebP", f'{c["dir"]}/{a}.webp')
         chk("animation WebM", f'anim/{c["bundle"]}/{c["skel"]}/{a}.webm')
     if c["spine"]:
         chk("Spine (skel+atlas)", f'{c["spine"]["dir"]}/{c["spine"]["skel"]}'); chk("Spine (skel+atlas)", f'{c["spine"]["dir"]}/{c["spine"]["atlas"]}')
 for n in ("portraits", "mainbg", "backgrounds"):
     for p in load(n):
-        chk(f"{n} (WebP)", p["file"]); chk(f"{n} (PNG)", p["png"]); chk(f"{n} (miniature)", p["thumb"])
+        chk(f"{n} (WebP)", p["file"])
+        if p.get("png"): chk(f"{n} (PNG)", p["png"])
+        chk(f"{n} (miniature)", p["thumb"])
 for g, names in load("textures").items():
     for x in names:
-        chk("texture (WebP)", f"img/PNG/{g}/{x}.webp"); chk("texture (PNG)", f"../PNG/{g}/{x}.png"); chk("texture (miniature)", f"thumbs/PNG/{g}/{x}.webp")
+        chk("texture (WebP)", f"img/PNG/{g}/{x}.webp")
+        if not REL: chk("texture (PNG)", f"../PNG/{g}/{x}.png")
+        chk("texture (miniature)", f"thumbs/PNG/{g}/{x}.webp")
 for v in load("videos"):
     chk("vidéo MP4", v["file"]); chk("vidéo WebM", v.get("webm")); chk("vidéo affiche", v["poster"])
     for s in v["subs"]: chk("sous-titres", s["src"])
@@ -88,3 +101,5 @@ print(f"  héros {len(H)} (animés {len({c.get('heroId') for c in C if c.get('he
 print(f"  modèles 3D {len(M)} · riggés {sum(1 for m in M if m.get('rig'))} · shaders {len(S)} (aperçu {sum(1 for x in S if x.get('preview'))}) · pixel {len(P)}")
 print(f"  PROBLEMES DE COHERENCE : {len(pb)}")
 for x in pb[:30]: print("   ", x)
+
+print(f"MODE RELEASE : {REL} — fichiers référencés hors des archives : {sum(outside.values())}", dict(outside))

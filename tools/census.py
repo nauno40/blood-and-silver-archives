@@ -1,10 +1,11 @@
 """Recensement de tous les bundles Unity du jeu : types d'objets contenus (sans les décoder) + quelques noms.
 Sortie : census.json  {chemin relatif: {"types": {type: n}, "names": {type: [noms…]}, "size": octets}}"""
+from config import TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, sys, json, collections
 from concurrent.futures import ProcessPoolExecutor
 
-ROOT = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
-OUT = r"C:\Users\Nauno\.bns_tools\census.json"
+ROOT = ASSETS
+OUT = TOOLS_DIR + r"\census.json"
 KEEP = {"Mesh", "SkinnedMeshRenderer", "MeshRenderer", "Sprite", "Texture2D", "AnimationClip", "Animator", "Animation",
         "AnimatorController", "AudioClip", "VideoClip", "TextAsset", "MonoBehaviour", "ParticleSystem", "Material",
         "Font", "Shader", "Terrain", "TerrainData", "LightmapSettings", "RenderSettings", "SpriteAtlas", "Canvas",

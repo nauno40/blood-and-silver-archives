@@ -6,11 +6,12 @@ Blood and Silver en PNG.
 - Doublons (même image dans plusieurs bundles) ignorés via un marqueur de hash atomique.
 - Reprise : un bundle déjà traité (marqueur dans PNG/.done) est sauté.
 """
+from config import PROJECT, ASSETS  # chemins : voir tools/config.py
 import os, sys, glob, hashlib, re, time, traceback
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-ASSETS = r"E:\Projets\BloodAndSilver\data\com.moonton.silverblood.eu\files\dragon2019\assets"
-OUT = r"E:\Projets\BloodAndSilver\PNG"
+ASSETS = ASSETS
+OUT = PROJECT + r"\PNG"
 HASHES = os.path.join(OUT, ".hashes")
 DONE = os.path.join(OUT, ".done")
 LOG = os.path.join(OUT, "extract_errors.txt")
