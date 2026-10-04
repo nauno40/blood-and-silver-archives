@@ -14,7 +14,7 @@ import UnityPy
 from PIL import Image
 
 A = ASSETS + r"\UI"
-SPINE = PROJECT + r"\Spine"
+SPINE = PROJECT + r"\Site\spine"
 OUT = PROJECT + r"\Fonds_ecran_principal"
 RENDER = TOOLS_DIR + r"\render\render.mjs"
 SS = 1  # facteur de rendu (1 = 2880x1440, résolution native du canevas)

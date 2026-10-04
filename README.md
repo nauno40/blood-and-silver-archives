@@ -16,6 +16,24 @@ outils d'extraction des données du jeu installées sur un téléphone Android e
 
 Le code du site, les outils et les données générées (`Site/data/`) sont dans Git ; les médias sont dans la Release.
 
+## Organisation
+
+```
+Ouvrir le site.bat             lance le site
+Installer les ressources.bat   télécharge les médias depuis la Release
+Site/                          le site complet, autonome
+  index.html  app.js  style.css  viewer3d.js  shader_preview.js  serveur.py  lib/
+  data/                        données générées (dans Git)
+  img/  thumbs/                images WebP et miniatures                 ┐
+  anim/  spine/                animations Spine (WebM) et squelettes     │
+  models/  models_fbx/         modèles 3D statiques (GLB / FBX)          │ médias :
+  models_anim/  models_anim_fbx/   modèles riggés et animations          │ Release,
+  pixel/                       pixel art du mode AFK                     │ pas Git
+  shaders/  shader_preview/    shaders et leurs aperçus                  │
+  polices/  audio/  audio_mp3/  videos/  videos_webm/  posters/  subs/   ┘
+tools/                         scripts d'extraction et de génération
+```
+
 ## Le site
 
 Application web statique (HTML / JS / CSS, sans framework), servie par un petit serveur Python local.

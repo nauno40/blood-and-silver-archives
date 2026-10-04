@@ -6,7 +6,7 @@ from concurrent.futures import ProcessPoolExecutor
 from PIL import Image
 
 ROOT = PROJECT
-DIRS = ["PNG", "Images_fixes", "Fonds_ecran", "Fonds_ecran_principal", "Pixel_AFK"]
+DIRS = ["PNG", "Images_fixes", "Fonds_ecran", "Fonds_ecran_principal", "Site/pixel"]  # images sources (originaux)
 OUT = os.path.join(ROOT, "Site", "thumbs")
 
 def job(src):

@@ -4,7 +4,7 @@ Personnage = hiérarchie de SpriteRenderer animée par des AnimationClip Unity :
 Transform (liaisons génériques, chemins = CRC32 relatifs à l'Animator) + échange de sprite (courbes PPtr). On rejoue
 chaque clip à 15 i/s, on compose les sprites (ordre de tri, couleur, retournement), agrandissement x3 au plus proche voisin
 (pixels nets) -> WebP animé sans perte + image fixe. Les ombres de sol colorées (Shadow_Desert / Snow / Grass) sont ignorées.
-Sortie : <projet>\Pixel_AFK\<bundle>\<clip>.webp, _image_fixe.png ; Cartes : Pixel_AFK\_sols\<nom>.png ; index.json"""
+Sortie : <projet>\Site\pixel\<bundle>\<clip>.webp, _image_fixe.png ; Cartes : Site\pixel\_sols\<nom>.png ; index.json"""
 from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
 import os, sys, re, json, math, zlib, glob, traceback
 import numpy as np
@@ -12,7 +12,7 @@ from concurrent.futures import ProcessPoolExecutor
 
 TOOLS = TOOLS_DIR
 ASSETS = ASSETS
-AFK_OUT = PROJECT + r"\Pixel_AFK"
+AFK_OUT = PROJECT + r"\Site\pixel"
 FPS, UP = 15, 3
 
 def setup():

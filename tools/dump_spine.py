@@ -1,11 +1,11 @@
 r"""Extrait chaque squelette Spine (skel/json + atlas + textures de l'atlas) dans
-<projet>\Spine\<bundle>\<squelette>\ et Ã©crit un inventaire."""
+<projet>\Site\spine\<bundle>\<squelette>\ et écrit un inventaire."""
 from config import PROJECT, ASSETS  # chemins : voir tools/config.py
 import os, glob, re, json
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 ASSETS = ASSETS
-OUT = PROJECT + r"\Spine"
+OUT = PROJECT + r"\Site\spine"
 
 def safe(n):
     return re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", n).strip() or "unnamed"
@@ -18,7 +18,7 @@ def process(path):
     import UnityPy
     data = open(path, "rb").read()
     if b".skel" not in data and b".atlas" not in data and b"skeleton" not in data:
-        # filtre rapide ; les bundles compressÃ©s passent quand mÃªme
+        # filtre rapide ; les bundles compressés passent quand même
         pass
     i = data.find(b"UnityFS\x00")
     try:
@@ -48,7 +48,7 @@ def process(path):
         os.makedirs(folder, exist_ok=True)
         sraw = raw_bytes(so.read())
         open(os.path.join(folder, safe(sname)), "wb").write(sraw)
-        # atlas : mÃªme nom de base, sinon le seul du bundle
+        # atlas : même nom de base, sinon le seul du bundle
         cand = [a for a in atlases.values() if a.peek_name().rsplit(".", 1)[0] == base] or list(atlases.values())
         pages = []
         for a in cand[:1]:

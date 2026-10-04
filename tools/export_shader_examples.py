@@ -107,7 +107,7 @@ def scan(path):
     return out
 
 if __name__ == "__main__":
-    idx = json.load(open(os.path.join(ROOT, "Shaders", "index.json"), encoding="utf-8"))
+    idx = json.load(open(os.path.join(ROOT, "Site", "shaders", "index.json"), encoding="utf-8"))
     wanted = {s["name"]: s["folder"] for s in idx}
     files = sorted(glob.glob(os.path.join(A, "ABResource", "[CMT]_*.unity3d")) + glob.glob(os.path.join(A, "ABResource", "*SceneRoot*.unity3d")) +
                    [l.strip() for l in open(os.path.join(TOOLS, "extra_files.txt"), encoding="utf-8") if l.strip()])

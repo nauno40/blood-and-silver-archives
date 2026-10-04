@@ -8,7 +8,7 @@ from PIL import Image
 
 ROOT = PROJECT
 OUT = os.path.join(ROOT, "Site", "img")
-SOURCES = ["PNG", "Images_fixes", "Fonds_ecran", "Fonds_ecran_principal", "Pixel_AFK"]
+SOURCES = ["PNG", "Images_fixes", "Fonds_ecran", "Fonds_ecran_principal", "Site/pixel"]  # images sources (originaux)
 
 def job(src):
     dst = os.path.join(OUT, os.path.splitext(os.path.relpath(src, ROOT))[0] + ".webp")

@@ -16,11 +16,14 @@ RELEASE = os.environ.get("BNS_FULL") != "1"
 os.makedirs(DATA, exist_ok=True)
 
 def rel(p): return os.path.relpath(p, SITE).replace("\\", "/")
+def _key(p):
+    q = os.path.relpath(p, SITE)
+    return q if not q.startswith("..") else os.path.relpath(p, ROOT)
 def web(p):
-    w = os.path.join(SITE, "img", os.path.splitext(os.path.relpath(p, ROOT))[0] + ".webp")
+    w = os.path.join(SITE, "img", os.path.splitext(_key(p))[0] + ".webp")
     return rel(w) if os.path.exists(w) else rel(p)
 def thumb(p):
-    t = os.path.join(SITE, "thumbs", os.path.splitext(os.path.relpath(p, ROOT))[0] + ".webp")
+    t = os.path.join(SITE, "thumbs", os.path.splitext(_key(p))[0] + ".webp")
     return rel(t) if os.path.exists(t) else rel(p)
 def write(name, obj):
     with open(os.path.join(DATA, name + ".js"), "w", encoding="utf-8") as f:
@@ -55,7 +58,7 @@ for k, s in enumerate(fs):
                                               "skinId": m.group(1), "portrait": portrait})
 
 ANIM = os.path.join(ROOT, "Animations")
-SPINE = os.path.join(ROOT, "Spine")
+SPINE = os.path.join(SITE, "spine")
 chars = []
 for still in sorted(glob.glob(os.path.join(ANIM, "*", "*", "_image_fixe.png")), key=str.lower):
     sdir = os.path.dirname(still); bundle = os.path.basename(os.path.dirname(sdir)); skel = os.path.basename(sdir)
@@ -75,7 +78,7 @@ for still in sorted(glob.glob(os.path.join(ANIM, "*", "*", "_image_fixe.png")), 
     chars.append({"id": f"{bundle}/{skel}", "bundle": bundle, "skel": skel,
                   "name": f["name"] if f else bundle, "skin": f["skin"] if f else "", "skinId": f["skinId"] if f else "",
                   "kind": kind, "still": web(still), "stillPng": web(still) if RELEASE else rel(still), "webp": not RELEASE, "thumb": thumb(still),
-                  "dir": rel(sdir), "anims": anims, "spine": spine})
+                  "dir": "" if RELEASE else rel(sdir), "anims": anims, "spine": spine})
 write("characters", chars)
 
 # portraits / cartes des personnages (atlas d'interface)
@@ -236,7 +239,7 @@ for m in models:
 write("models", models)
 
 # --- shaders (Shaders\<dossier>\<nom>.shader + glsl\*.glsl, voir extract_shaders.py) -------------------
-SH = os.path.join(ROOT, "Shaders"); shaders = []
+SH = os.path.join(SITE, "shaders"); shaders = []
 DESC = {"Nova/Chara_01": "Personnages : ombrage toon par rampe, contour, liseré, matcap, scintillement, dissolution",
         "Nova/Chara_Fast_01": "Personnages, version allégée", "Nova/Chara_01_Transparent": "Personnages, pièces transparentes",
         "Nova/Chara_Fire": "Personnages en feu", "Nova/Hair_01": "Cheveux des personnages", "Nova/Face_01": "Visages des personnages",
@@ -256,7 +259,7 @@ if os.path.exists(os.path.join(SH, "index.json")):
 write("shaders", shaders)
 
 # --- mode AFK (pixel art) : personnages / monstres / objets animés + cartes de sol (render_afk.py) -------------
-PX = os.path.join(ROOT, "Pixel_AFK"); pixel = []
+PX = os.path.join(SITE, "pixel"); pixel = []
 hero_by_tok = {}
 for h in heroes.values():
     for s_ in h["skins"]: hero_by_tok.setdefault(s_["bundle"].lower().split("_")[0], h["id"])
@@ -279,8 +282,8 @@ if os.path.exists(os.path.join(PX, "index.json")):
 write("pixel", sorted(pixel, key=lambda x: x["label"].lower()))
 
 # --- polices du jeu --------------------------------------------------------------------------------------
-write("fonts", [{"name": os.path.splitext(f)[0], "file": rel(os.path.join(ROOT, "Polices", f)), "size": round(os.path.getsize(os.path.join(ROOT, "Polices", f)) / 1024)}
-                for f in sorted(os.listdir(os.path.join(ROOT, "Polices"))) if f.lower().endswith((".ttf", ".otf"))] if os.path.isdir(os.path.join(ROOT, "Polices")) else [])
+write("fonts", [{"name": os.path.splitext(f)[0], "file": rel(os.path.join(SITE, "polices", f)), "size": round(os.path.getsize(os.path.join(SITE, "polices", f)) / 1024)}
+                for f in sorted(os.listdir(os.path.join(SITE, "polices"))) if f.lower().endswith((".ttf", ".otf"))] if os.path.isdir(os.path.join(SITE, "polices")) else [])
 # --- chiffres clés pour l'accueil (petit fichier chargé d'emblée) ---------------------------------------
 stats = {"heroes": len(heroes), "heroesAnimated": len({c.get("heroId") for c in chars if c.get("heroId")}), "skins": sum(len(h["skins"]) for h in heroes.values()),
          "spine": len(chars), "spineAnims": sum(len(c["anims"]) for c in chars), "portraits": len(portraits),

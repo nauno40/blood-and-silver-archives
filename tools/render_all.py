@@ -5,7 +5,7 @@ from config import PROJECT, TOOLS_DIR  # chemins : voir tools/config.py
 import hashlib, json, os, subprocess, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-SPINE = PROJECT + r"\Spine"
+SPINE = PROJECT + r"\Site\spine"
 OUT = PROJECT + r"\Animations"
 RENDER = TOOLS_DIR + r"\render\render.mjs"
 LOG = os.path.join(OUT, "render_errors.txt")

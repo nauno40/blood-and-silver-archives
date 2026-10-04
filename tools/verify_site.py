@@ -11,7 +11,7 @@ checked, bad = Counter(), []
 REL = load("stats").get("release", False)
 # racines distribuées dans les archives de la Release (tout fichier référencé doit s'y trouver)
 PACK = ["Site/img", "Site/thumbs", "Site/anim", "Site/audio", "Site/audio_mp3", "Site/videos", "Site/videos_webm", "Site/posters", "Site/subs",
-        "Site/models", "Site/models_fbx", "Site/models_anim", "Site/models_anim_fbx", "Site/shader_preview", "Spine", "Pixel_AFK", "Shaders", "Polices"]
+        "Site/models", "Site/models_fbx", "Site/models_anim", "Site/models_anim_fbx", "Site/shader_preview", "Site/spine", "Site/pixel", "Site/shaders", "Site/polices"]
 ROOTDIR = os.path.dirname(SITE); outside = Counter()
 def chk(kind, p):
     if not p:

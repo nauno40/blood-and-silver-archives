@@ -1,7 +1,7 @@
 r"""Extrait les shaders du jeu (objets Shader des bundles) : pour chaque shader distinct,
-  <projet>\Shaders\<Nom>\<Nom>.shader  : squelette ShaderLab lisible (propriétés + valeurs par défaut,
+  <projet>\Site\shaders\<Nom>\<Nom>.shader  : squelette ShaderLab lisible (propriétés + valeurs par défaut,
                                                           sous-shaders, passes, états de rendu, tags, mots-clés)
-  <projet>\Shaders\<Nom>\glsl\NNN_<etape>.glsl : programmes GPU OpenGL ES 3 (source GLSL, plateforme 9),
+  <projet>\Site\shaders\<Nom>\glsl\NNN_<etape>.glsl : programmes GPU OpenGL ES 3 (source GLSL, plateforme 9),
                                                           décompressés (LZ4) du blob du shader, doublons retirés.
 Toutes les copies d'un même shader (une par bundle, souvent partielles) sont fusionnées. Index : Shaders\index.json"""
 from config import PROJECT, TOOLS_DIR, ASSETS  # chemins : voir tools/config.py
@@ -9,7 +9,7 @@ import os, re, json, hashlib
 from concurrent.futures import ProcessPoolExecutor
 
 ASSETS = ASSETS
-OUT = PROJECT + r"\Shaders"
+OUT = PROJECT + r"\Site\shaders"
 CENSUS = TOOLS_DIR + r"\census.json"
 PLATFORMS = {0: "OpenGL", 4: "D3D11", 5: "GLES2", 9: "GLES3", 14: "Metal", 15: "OpenGLCore", 18: "Vulkan", 19: "Switch"}
 PROPTYPE = {0: "Color", 1: "Vector", 2: "Float", 3: "Range", 4: "2D", 5: "Int"}

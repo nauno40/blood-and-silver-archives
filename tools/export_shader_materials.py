@@ -62,7 +62,7 @@ def scan(rel):
 
 if __name__ == "__main__":
     C = json.load(open(os.path.join(TOOLS, "census.json"), encoding="utf-8"))
-    idx = json.load(open(os.path.join(ROOT, "Shaders", "index.json"), encoding="utf-8"))
+    idx = json.load(open(os.path.join(ROOT, "Site", "shaders", "index.json"), encoding="utf-8"))
     wanted = {s["name"]: s["folder"] for s in idx}
     rels = [k for k, x in C.items() if x.get("types", {}).get("Shader") and x["types"].get("Material")]
     best = {}  # shader -> liste (score, matériau, images), les 3 meilleurs matériaux distincts
