@@ -8,7 +8,7 @@ outils d'extraction des données du jeu installées sur un téléphone Android e
 1. Télécharger le dépôt (bouton **Code → Download ZIP**, ou `git clone`) et le décompresser.
 2. Installer [Python 3](https://www.python.org/downloads/) si ce n'est pas déjà fait.
 3. Double-cliquer sur **`Installer les ressources.bat`** : il télécharge depuis la Release
-   [`ressources-v1`](../../releases/tag/ressources-v1) les archives de ressources (~14 Go : images, animations, modèles 3D
+   [`ressources-v1`](../../releases/tag/ressources-v1) les archives de ressources (~13 Go : images, animations, modèles 3D
    GLB, sons, vidéos…), les vérifie et les décompresse au bon endroit. Prévoir ~30 Go libres pendant l'installation ;
    en cas de coupure, relancer : l'installation reprend où elle s'était arrêtée.
    (Équivalent manuel : télécharger les `bns-ressources-NN.zip` de la Release et les décompresser à la racine du projet.)
@@ -30,7 +30,7 @@ Site/                          le site complet, autonome
   models_anim/                 modèles riggés et animations (GLB)        │ Release,
   pixel/                       pixel art du mode AFK                     │ pas Git
   shaders/  shader_preview/    shaders et leurs aperçus                  │
-  polices/  audio/  videos/  videos_webm/  posters/  subs/   ┘
+  polices/  audio/  videos/  posters/  subs/   ┘
 tools/                         scripts d'extraction et de génération
 ```
 
@@ -75,7 +75,7 @@ variables `BNS_PROJECT`, `BNS_FFMPEG`, `BNS_VGMSTREAM` pour les adapter.
 | 5 | Modèles 3D | `list_extra_models.py`, `export_3d.py` puis `export_3d.py @tools/extra_files.txt`, `export_rigged.py` — textures retrouvées par nom avec `tex_by_name.py` |
 | 6 | Shaders | `extract_shaders.py`, `shader_by_material.py`, `export_shader_materials.py`, `export_shader_examples.py` |
 | 7 | Pixel art (AFK) | `render_afk.py` |
-| 8 | Audio / vidéo | `convert_audio.py`, `remux_videos.py`, `mux_video_audio.py`, `make_video_webm.py` |
+| 8 | Audio / vidéo | `convert_audio.py`, `remux_videos.py`, `mux_video_audio.py` |
 | 9 | Images pour le site | `make_webp.py`, `make_thumbs.py` |
 | 10 | Données du site | `build_site.py` (génère `Site/data/*.js`) |
 | 11 | Vérification | `verify_site.py` (chaque fichier référencé existe + cohérence entre rubriques), `decode_check.py` (décodage des médias) |

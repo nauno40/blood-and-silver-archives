@@ -863,13 +863,11 @@ function videoDetail(name) {
   if (!v) { view.innerHTML = `<p class="empty">Introuvable.</p>`; return; }
   view.innerHTML = `<p><a href="#/videos">← Vidéos</a></p><h1>${esc(v.name)}</h1>
     <div class="video-stage"><video controls autoplay preload="metadata" poster="${esc(v.poster)}">
-      ${v.webm ? `<source src="${esc(v.webm)}" type='video/webm; codecs="vp9, opus"'>` : ""}
       <source src="${esc(v.file)}" type="video/mp4">
       ${v.subs.map((s, k) => `<track kind="subtitles" srclang="${esc(s.lang)}" label="${esc(s.label)}" src="${esc(s.src)}" ${k === 0 ? "default" : ""}>`).join("")}
     </video></div>
     <p class="toolbar">${i > 0 ? `<a class="btn ghost" href="#/videos/${encodeURIComponent(all[i - 1].name)}">← Précédente</a>` : ""}
       ${i < all.length - 1 ? `<a class="btn ghost" href="#/videos/${encodeURIComponent(all[i + 1].name)}">Suivante →</a>` : ""}
-      ${v.webm ? `<a class="btn ghost" href="${esc(v.webm)}" download>Télécharger (WebM)</a>` : ""}
       <a class="btn ghost" href="${esc(v.file)}" download>Télécharger (MP4)</a></p>`;
 }
 

@@ -10,7 +10,7 @@ def load(n):
 checked, bad = Counter(), []
 REL = load("stats").get("release", False)
 # racines distribuées dans les archives de la Release (tout fichier référencé doit s'y trouver)
-PACK = ["Site/img", "Site/thumbs", "Site/anim", "Site/audio", "Site/videos", "Site/videos_webm", "Site/posters", "Site/subs",
+PACK = ["Site/img", "Site/thumbs", "Site/anim", "Site/audio", "Site/videos", "Site/posters", "Site/subs",
         "Site/models", "Site/models_anim", "Site/shader_preview", "Site/spine", "Site/pixel", "Site/shaders", "Site/polices"]
 ROOTDIR = os.path.dirname(SITE); outside = Counter()
 def chk(kind, p):
@@ -41,7 +41,7 @@ for g, names in load("textures").items():
         if not REL: chk("texture (PNG)", f"../PNG/{g}/{x}.png")
         chk("texture (miniature)", f"thumbs/PNG/{g}/{x}.webp")
 for v in load("videos"):
-    chk("vidéo MP4", v["file"]); chk("vidéo WebM", v.get("webm")); chk("vidéo affiche", v["poster"])
+    chk("vidéo MP4", v["file"]); chk("vidéo affiche", v["poster"])
     for s in v["subs"]: chk("sous-titres", s["src"])
 for a in load("audio"):
     chk("son Ogg", a["file"])

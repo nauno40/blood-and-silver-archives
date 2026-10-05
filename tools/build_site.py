@@ -192,8 +192,7 @@ for v in sorted(glob.glob(os.path.join(ASSETS, "Video", "*.mp4")), key=str.lower
     if not os.path.exists(poster):
         subprocess.run([FF, "-v", "error", "-y", "-ss", "1.5", "-i", v, "-frames:v", "1", "-vf", "scale=480:-2", poster])
     kind = "Ultime (cut-in)" if re.search(r"(?i)maxskill|cut[il]n", base) else ("Histoire" if re.match(r"(?i)[A-E]_\d", base) else "Autre")
-    wm = os.path.join(SITE, "videos_webm", base + ".webm")
-    videos.append({"file": rel(v), "webm": rel(wm) if os.path.exists(wm) else "", "name": base, "kind": kind, "poster": rel(poster) if os.path.exists(poster) else "",
+    videos.append({"file": rel(v), "name": base, "kind": kind, "poster": rel(poster) if os.path.exists(poster) else "",
                    "subs": [{"lang": l, "label": LANGS.get(l, l), "src": p} for l, p in sorted(subs.get(base, {}).items(), key=lambda kv: kv[0] != "fr")]})
 write("videos", videos)
 
