@@ -909,10 +909,8 @@ async function play(a, list) {
   PL.cur = a; PL.list = list || [a]; PL.el.hidden = false;
   $(".pl-title", PL.el).textContent = a.name;
   $(".pl-meta", PL.el).textContent = [a.cat, a.lang !== "SFX" ? a.lang : "", (a.events || [])[0]].filter(Boolean).join(" · ");
-  // MP3 en priorité (compatible partout), repli sur l'Ogg Vorbis si le MP3 manque ou échoue
-  PL.audio.onerror = () => { if (a.mp3 && PL.audio.getAttribute("src") === a.mp3) { PL.audio.src = a.file; PL.audio.play(); } };
-  PL.audio.src = a.mp3 || a.file; PL.audio.play();
-  $(".pl-dl", PL.el).innerHTML = (a.mp3 ? `<a href="${esc(a.mp3)}" download>MP3</a>` : "") + `<a href="${esc(a.file)}" download>OGG</a>`;
+  PL.audio.src = a.file; PL.audio.play();
+  $(".pl-dl", PL.el).innerHTML = `<a href="${esc(a.file)}" download>OGG</a>`;
   PL.cues = [];
   const sub = (a.subs || []).find(s => s.lang === "fr") || (a.subs || [])[0];
   if (sub) PL.cues = await loadCues(sub.src);

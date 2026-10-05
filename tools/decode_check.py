@@ -1,5 +1,5 @@
-r"""Décode intégralement chaque image WebP et chaque MP3 du site pour détecter les fichiers corrompus.
-Images : PIL (décodage complet). MP3 : ffmpeg décode tout le flux sans sortie (-f null), erreurs comptées."""
+r"""Décode intégralement chaque image WebP et chaque son Ogg du site pour détecter les fichiers corrompus.
+Images : PIL (décodage complet). Sons : ffmpeg décode tout le flux sans sortie (-f null), erreurs comptées."""
 from config import PROJECT, FFMPEG  # chemins : voir tools/config.py
 import os, glob, subprocess, sys
 from concurrent.futures import ProcessPoolExecutor
@@ -33,5 +33,5 @@ if __name__ == "__main__":
            glob.glob(os.path.join(SITE, "thumbs", "**", "*.webp"), recursive=True) + \
            glob.glob(os.path.join(SITE, "models", "*", "*.webp"), recursive=True) + glob.glob(os.path.join(SITE, "posters", "*.webp"))
     run(img, imgs, "IMAGES")
-    run(snd, glob.glob(os.path.join(SITE, "audio_mp3", "**", "*.mp3"), recursive=True), "MP3")
+    run(snd, glob.glob(os.path.join(SITE, "audio", "**", "*.ogg"), recursive=True), "SONS")
     print("TERMINE", flush=True)

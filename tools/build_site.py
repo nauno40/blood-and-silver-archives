@@ -201,8 +201,6 @@ write("videos", videos)
 aj = os.path.join(SITE, "audio", "audio.json")
 audio = json.load(open(aj, encoding="utf-8")) if os.path.exists(aj) else []
 for a in audio:
-    mp3 = "audio_mp3/" + os.path.splitext(a["file"][len("audio/"):])[0] + ".mp3"
-    if os.path.exists(os.path.join(SITE, mp3)): a["mp3"] = mp3  # MP3 lu en priorité, Ogg en secours
     if a["name"] in subs: a["subs"] = [{"lang": l, "label": LANGS.get(l, l), "src": p} for l, p in subs[a["name"]].items()]
 write("audio", audio)
 
