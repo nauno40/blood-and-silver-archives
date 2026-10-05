@@ -236,6 +236,8 @@ for m in models:
         m["rig"] = a["file"]; m["clips"] = len(a["clips"]); m["bones"] = a.get("bones", 0)
         fb = os.path.join(SITE, "models_anim_fbx", m["cat"], m["name"] + ".fbx")
         m["rigfbx"] = rel(fb) if os.path.exists(fb) else ""
+        # le modèle riggé contient le même maillage : la version statique n'est pas distribuée
+        m["file"], m["fbx"] = m["rig"], m["rigfbx"]
 write("models", models)
 
 # --- shaders (Shaders\<dossier>\<nom>.shader + glsl\*.glsl, voir extract_shaders.py) -------------------

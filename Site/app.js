@@ -628,8 +628,8 @@ function modelDetail(cat, name) {
       <div class="spine-box" id="m3"></div>
       <p class="toolbar">${i > 0 ? `<a class="btn ghost" href="#/modeles/${cat}/${encodeURIComponent(list[i - 1].name)}">← Précédent</a>` : ""}
         ${i < list.length - 1 ? `<a class="btn ghost" href="#/modeles/${cat}/${encodeURIComponent(list[i + 1].name)}">Suivant →</a>` : ""}
-        <a class="btn ghost" href="${esc(m.file)}" download>Télécharger le GLB</a>
-        ${m.fbx ? `<a class="btn ghost" href="${esc(m.fbx)}" download>Télécharger le FBX</a>` : ""}
+        ${m.rig ? "" : `<a class="btn ghost" href="${esc(m.file)}" download>Télécharger le GLB</a>`}
+        ${m.fbx && !m.rig ? `<a class="btn ghost" href="${esc(m.fbx)}" download>Télécharger le FBX</a>` : ""}
         ${m.rig ? `<a class="btn ghost" href="${esc(m.rig)}" download>GLB riggé + animations</a>` : ""}
         ${m.rigfbx ? `<a class="btn ghost" href="${esc(m.rigfbx)}" download>FBX riggé + animations</a>` : ""}</p>
       <div id="m3mode"></div><div id="m3clips"></div>`;
