@@ -8,8 +8,8 @@ outils d'extraction des données du jeu installées sur un téléphone Android e
 1. Télécharger le dépôt (bouton **Code → Download ZIP**, ou `git clone`) et le décompresser.
 2. Installer [Python 3](https://www.python.org/downloads/) si ce n'est pas déjà fait.
 3. Double-cliquer sur **`Installer les ressources.bat`** : il télécharge depuis la Release
-   [`ressources-v1`](../../releases/tag/ressources-v1) les archives de ressources (~16 Go : images, animations, modèles 3D
-   GLB, sons, vidéos…), les vérifie et les décompresse au bon endroit. Prévoir ~35 Go libres pendant l'installation ;
+   [`ressources-v1`](../../releases/tag/ressources-v1) les archives de ressources (~14 Go : images, animations, modèles 3D
+   GLB, sons, vidéos…), les vérifie et les décompresse au bon endroit. Prévoir ~30 Go libres pendant l'installation ;
    en cas de coupure, relancer : l'installation reprend où elle s'était arrêtée.
    (Équivalent manuel : télécharger les `bns-ressources-NN.zip` de la Release et les décompresser à la racine du projet.)
 4. Double-cliquer sur **`Ouvrir le site.bat`**.
