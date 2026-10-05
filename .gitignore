@@ -2,6 +2,7 @@
 # Les médias (images, modèles, sons, vidéos…) ne sont pas dans Git : ils sont distribués dans la Release « ressources-v1 ».
 /*
 !/.gitignore
+!/.gitattributes
 !/README.md
 !/Ouvrir le site.bat
 !/Installer les ressources.bat
