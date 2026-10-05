@@ -226,18 +226,14 @@ models = json.load(open(mj, encoding="utf-8")) if os.path.exists(mj) else []
 for m in models:
     t = os.path.join(SITE, "models", m["cat"], m["name"] + ".webp")
     m["thumb"] = rel(t) if os.path.exists(t) else ""
-    fb = os.path.join(SITE, "models_fbx", m["cat"], m["name"] + ".fbx")
-    m["fbx"] = rel(fb) if os.path.exists(fb) else ""
 aj = os.path.join(SITE, "models_anim", "anim.json")
 anims = {a["name"]: a for a in json.load(open(aj, encoding="utf-8"))} if os.path.exists(aj) else {}
 for m in models:
     a = anims.get(m["name"])
     if a and a["clips"] and os.path.exists(os.path.join(SITE, a["file"])):
         m["rig"] = a["file"]; m["clips"] = len(a["clips"]); m["bones"] = a.get("bones", 0)
-        fb = os.path.join(SITE, "models_anim_fbx", m["cat"], m["name"] + ".fbx")
-        m["rigfbx"] = rel(fb) if os.path.exists(fb) else ""
         # le modèle riggé contient le même maillage : la version statique n'est pas distribuée
-        m["file"], m["fbx"] = m["rig"], m["rigfbx"]
+        m["file"] = m["rig"]
 write("models", models)
 
 # --- shaders (Shaders\<dossier>\<nom>.shader + glsl\*.glsl, voir extract_shaders.py) -------------------

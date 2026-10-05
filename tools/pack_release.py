@@ -7,7 +7,7 @@ import os, json, zipfile, hashlib, time
 ROOT = PROJECT
 OUT = os.path.join(ROOT, "release")
 PACK = ["Site/img", "Site/thumbs", "Site/anim", "Site/audio", "Site/audio_mp3", "Site/videos", "Site/videos_webm", "Site/posters", "Site/subs",
-        "Site/models", "Site/models_fbx", "Site/models_anim", "Site/models_anim_fbx", "Site/shader_preview", "Site/spine", "Site/pixel", "Site/shaders", "Site/polices"]
+        "Site/models", "Site/models_anim", "Site/shader_preview", "Site/spine", "Site/pixel", "Site/shaders", "Site/polices"]
 LIMIT = 1_900_000_000  # marge sous la limite GitHub de 2 Gio par fichier
 
 def main():

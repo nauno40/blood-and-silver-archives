@@ -8,8 +8,8 @@ outils d'extraction des données du jeu installées sur un téléphone Android e
 1. Télécharger le dépôt (bouton **Code → Download ZIP**, ou `git clone`) et le décompresser.
 2. Installer [Python 3](https://www.python.org/downloads/) si ce n'est pas déjà fait.
 3. Double-cliquer sur **`Installer les ressources.bat`** : il télécharge depuis la Release
-   [`ressources-v1`](../../releases/tag/ressources-v1) les archives de ressources (~24 Go : images, animations, modèles 3D
-   GLB + FBX, sons, vidéos…), les vérifie et les décompresse au bon endroit. Prévoir ~50 Go libres pendant l'installation ;
+   [`ressources-v1`](../../releases/tag/ressources-v1) les archives de ressources (~16 Go : images, animations, modèles 3D
+   GLB, sons, vidéos…), les vérifie et les décompresse au bon endroit. Prévoir ~35 Go libres pendant l'installation ;
    en cas de coupure, relancer : l'installation reprend où elle s'était arrêtée.
    (Équivalent manuel : télécharger les `bns-ressources-NN.zip` de la Release et les décompresser à la racine du projet.)
 4. Double-cliquer sur **`Ouvrir le site.bat`**.
@@ -26,8 +26,8 @@ Site/                          le site complet, autonome
   data/                        données générées (dans Git)
   img/  thumbs/                images WebP et miniatures                 ┐
   anim/  spine/                animations Spine (WebM) et squelettes     │
-  models/  models_fbx/         modèles 3D statiques (GLB / FBX)          │ médias :
-  models_anim/  models_anim_fbx/   modèles riggés et animations          │ Release,
+  models/                      modèles 3D statiques (GLB)                │ médias :
+  models_anim/                 modèles riggés et animations (GLB)        │ Release,
   pixel/                       pixel art du mode AFK                     │ pas Git
   shaders/  shader_preview/    shaders et leurs aperçus                  │
   polices/  audio/  audio_mp3/  videos/  videos_webm/  posters/  subs/   ┘
@@ -45,7 +45,7 @@ Application web statique (HTML / JS / CSS, sans framework), servie par un petit 
 | Portraits | expressions et illustrations regroupées par héros |
 | Écran principal / Fonds | fonds de l'écran d'accueil recomposés (prefabs UGUI) et illustrations |
 | Textures | toutes les images du jeu par dossier, aperçu « boule / cube / ciel 360° » |
-| Modèles 3D | personnages, monstres, PNJ, cartes, décors, objets, cinématiques (glTF + FBX), squelettes et animations, rendu toon avec contour |
+| Modèles 3D | personnages, monstres, PNJ, cartes, décors, objets, cinématiques (GLB), squelettes et animations, rendu toon avec contour |
 | Shaders | 29 shaders (définition lisible + GLSL ES 3) avec **aperçu en direct exécutant le vrai code GPU du jeu** en WebGL2 |
 | Pixel art | personnages et monstres du mode AFK recomposés et animés, cartes de sol |
 | Polices, Vidéos, Audio, Données | polices du jeu, cinématiques sous-titrées, ~24 000 sons Wwise, textes et tables de configuration |
@@ -59,8 +59,8 @@ Inutile pour simplement consulter le site (les ressources sont dans la Release).
 
 **Prérequis** : Python 3.12 (`pip install -r tools/requirements.txt` : UnityPy, numpy, Pillow, trimesh, lz4, imageio-ffmpeg —
 ce dernier fournit FFmpeg), Node.js (`npm install` dans `tools/render/`), [vgmstream](https://vgmstream.org) (audio Wwise, dans
-`tools/vgmstream/`) et Blender 5.x (FBX). Les chemins sont calculés depuis l'emplacement du dépôt (`tools/config.py`) ;
-variables `BNS_PROJECT`, `BNS_FFMPEG`, `BNS_BLENDER`, `BNS_VGMSTREAM` pour les adapter.
+`tools/vgmstream/`). Les chemins sont calculés depuis l'emplacement du dépôt (`tools/config.py`) ;
+variables `BNS_PROJECT`, `BNS_FFMPEG`, `BNS_VGMSTREAM` pour les adapter.
 
 **Données du jeu** : copier le dossier `Android/data/com.moonton.silverblood.eu/` du téléphone dans `data/` à la racine du dépôt.
 
@@ -72,7 +72,7 @@ variables `BNS_PROJECT`, `BNS_FFMPEG`, `BNS_BLENDER`, `BNS_VGMSTREAM` pour les a
 | 2 | Images | `extract_png.py`, `extract_png_missing.py`, `extract_cubemaps.py` |
 | 3 | Fonds d'écran | `find_bg.py`, `copy_bg.py`, `compose_mainbg.py` (écran principal recomposé) |
 | 4 | Spine 2D | `dump_spine.py`, `render_all.py` (Node : `render/render.mjs`, `layers.mjs`), `make_webm.py` |
-| 5 | Modèles 3D | `list_extra_models.py`, `export_3d.py` puis `export_3d.py @tools/extra_files.txt`, `export_rigged.py`, `run_fbx.py`, `run_fbx_anim.py` (Blender : `glb2fbx*.py`, `check_fbx.py`) — textures retrouvées par nom avec `tex_by_name.py` |
+| 5 | Modèles 3D | `list_extra_models.py`, `export_3d.py` puis `export_3d.py @tools/extra_files.txt`, `export_rigged.py` — textures retrouvées par nom avec `tex_by_name.py` |
 | 6 | Shaders | `extract_shaders.py`, `shader_by_material.py`, `export_shader_materials.py`, `export_shader_examples.py` |
 | 7 | Pixel art (AFK) | `render_afk.py` |
 | 8 | Audio / vidéo | `convert_audio.py`, `make_mp3.py`, `remux_videos.py`, `mux_video_audio.py`, `make_video_webm.py` |

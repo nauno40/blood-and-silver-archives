@@ -3,7 +3,7 @@
 Par défaut tout est calculé depuis l'emplacement du dépôt :
   PROJECT   = racine du dépôt (dossier parent de tools/) ; les données du téléphone vont dans PROJECT\\data\\
   TOOLS_DIR = ce dossier tools/ (scripts + caches générés : census.json, cab_index.json…)
-Variables d'environnement pour adapter : BNS_PROJECT, BNS_FFMPEG, BNS_BLENDER, BNS_VGMSTREAM."""
+Variables d'environnement pour adapter : BNS_PROJECT, BNS_FFMPEG, BNS_VGMSTREAM."""
 import os
 
 TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -23,5 +23,4 @@ def _ffmpeg():
 
 
 FFMPEG = _ffmpeg()
-BLENDER = os.environ.get("BNS_BLENDER") or r"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"
 VGMSTREAM = os.environ.get("BNS_VGMSTREAM") or os.path.join(TOOLS_DIR, "vgmstream", "vgmstream-cli.exe")

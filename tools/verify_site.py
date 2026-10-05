@@ -11,7 +11,7 @@ checked, bad = Counter(), []
 REL = load("stats").get("release", False)
 # racines distribuées dans les archives de la Release (tout fichier référencé doit s'y trouver)
 PACK = ["Site/img", "Site/thumbs", "Site/anim", "Site/audio", "Site/audio_mp3", "Site/videos", "Site/videos_webm", "Site/posters", "Site/subs",
-        "Site/models", "Site/models_fbx", "Site/models_anim", "Site/models_anim_fbx", "Site/shader_preview", "Site/spine", "Site/pixel", "Site/shaders", "Site/polices"]
+        "Site/models", "Site/models_anim", "Site/shader_preview", "Site/spine", "Site/pixel", "Site/shaders", "Site/polices"]
 ROOTDIR = os.path.dirname(SITE); outside = Counter()
 def chk(kind, p):
     if not p:
@@ -47,10 +47,9 @@ for a in load("audio"):
     chk("son Ogg", a["file"]); chk("son MP3", a.get("mp3"))
     for s in a.get("subs", []): chk("sous-titres", s["src"])
 for m in load("models"):
-    chk("modèle GLB", m["file"]); chk("modèle FBX", m.get("fbx")); chk("modèle vignette", m["thumb"])
+    chk("modèle GLB", m["file"]); chk("modèle vignette", m["thumb"])
 for m in load("models"):
     if m.get("rig"): chk("modèle riggé GLB", m["rig"])
-    if m.get("rig") and "rigfbx" in m: chk("modèle riggé FBX", m["rigfbx"])
 for h in load("heroes"):
     for s_ in h["skins"]:
         if s_.get("illus"): chk("héros: illustration de tenue", s_["illus"]); chk("héros: miniature tenue", s_["illusThumb"])
